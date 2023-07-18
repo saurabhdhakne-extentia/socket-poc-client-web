@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Socket Demo</title>
+  </head>
+  <body>
+    <h1>Socket Demo</h1>
+    <h2 id="notification"></h2>
+    <button onclick="notifyServer()">Notify Server</button>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+    <script>
+      // Connect to the server via socket.io
+      const socket = io('https://socket-poc-service.onrender.com/');
+
+      // Listen for the 'notification' event from the server
+      socket.on("notification", (message) => {
+        showNotification(message);
+      });
+
+      // Function to send a notification request to the server
+      function notifyServer() {
+        fetch("https://socket-poc-service.onrender.com/notify/")
+          .then((response) => response.text())
+          .then((data) => console.log(data))
+          .catch((error) => console.error(error));
+      }
+
+      // Function to display the notification
+      function showNotification(message) {
+        console.log(`Notification: ${message}`);
+        document.getElementById("notification").innerText = message;
+      }
+    </script>
+  </body>
+</html>
